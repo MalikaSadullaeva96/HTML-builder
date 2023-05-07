@@ -1,0 +1,39 @@
+const fs = require('fs/promises');
+const fsp = require('fs');
+const path = require('path');
+
+const dirPath = path.join(__dirname, 'styles');
+const targetPath = path.join(__dirname, 'project-dist');
+const tPath = path.join(targetPath, 'bundle.css');
+let data = [];
+
+fs.readdir(dirPath)
+    .then(async (files) => {
+        for (const file of files) {
+            const filePath = path.join(dirPath, file);
+            const extension = path.extname(filePath);
+            if (extension === '.css') {
+                const stream = fsp.createReadStream(filePath, 'utf-8');
+                const readStreamPromise = new Promise((resolve) => {
+                    let fileData = '';
+                    stream.on('data', chunk => {
+                        fileData += chunk;
+                    });
+                    stream.on('end', () => {
+                        data.push(fileData);
+                        resolve();
+                    });
+                });
+                await readStreamPromise;
+            }
+        }
+        const writeStream = fsp.createWriteStream(tPath, { flags: 'a' });
+        writeStream.write(data.join(''), (err) => {
+            if (err) {
+                console.error(err);
+            } else {
+                console.log('CSS data has been written to bundle.css');
+            }
+        });
+    })
+    .catch((err) => console.error(err));
