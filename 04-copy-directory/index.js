@@ -1,17 +1,6 @@
 const fs = require('fs/promises');
 const path = require('path');
 
-const dirPath = path.join(__dirname, 'files');
-const copyPath = path.join(__dirname, 'files-copy');
-
-fs.mkdir(copyPath, { recursive: true })
-  .then(() => {
-    console.log(`${copyPath} directory created successfully!`);
-  })
-  .catch((err) => {
-    console.error(`Error creating ${copyPath} directory:`, err);
-  });
-
 
 async function copyRecursive(source, destination) {
   const stat = await fs.stat(source);
@@ -28,14 +17,37 @@ async function copyRecursive(source, destination) {
   }
 }
 
-fs.readdir(dirPath)
-  .then(async (files) => {
-    for (const file of files) {
-      const sourcePath = path.join(dirPath, file);
-      const destinationPath = path.join(copyPath, file);
-      await copyRecursive(sourcePath, destinationPath);
-    }
-  })
-  .catch((err) => {
-    console.error(`Error reading files in ${dirPath} directory:`, err);
-  });
+
+function copyFile (sourceDir = 'files', destDir = 'files-copy', folderName = 'files-copy' ){
+
+
+  const dirPath = path.join(__dirname, sourceDir); // source folder
+  const copyPath = path.join(__dirname, destDir); // dest folder
+  const dirName = path.join(__dirname, folderName);
+
+
+
+    fs.mkdir(dirName, { recursive: true })
+      .then(() => {
+        console.log(`${dirName} directory created successfully!`);
+      })
+      .catch((err) => {
+        console.error(`Error creating ${dirName} directory:`, err);
+      });
+
+  
+  fs.readdir(dirPath)
+    .then(async (files) => {
+      for (const file of files) {
+        const sourcePath = path.join(dirPath, file);
+        const destinationPath = path.join(dirName, file);
+        await copyRecursive(sourcePath, destinationPath);
+      }
+    })
+    .catch((err) => {
+      console.error(`Error reading files in ${dirPath} directory:`, err);
+    });
+
+}
+copyFile();
+module.exports = copyFile;

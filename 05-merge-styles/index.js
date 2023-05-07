@@ -2,9 +2,12 @@ const fs = require('fs/promises');
 const fsp = require('fs');
 const path = require('path');
 
-const dirPath = path.join(__dirname, 'styles');
-const targetPath = path.join(__dirname, 'project-dist');
-const tPath = path.join(targetPath, 'bundle.css');
+
+function joinCss (initialDir ='styles', destDir='project-dist', fileName = 'bundle.css') {
+
+const dirPath = path.join(__dirname, initialDir); // initial dir
+const targetPath = path.join(__dirname, destDir); //dest dir
+const tPath = path.join(targetPath, fileName); // file name in dest dir
 let data = [];
 
 fs.readdir(dirPath)
@@ -37,3 +40,6 @@ fs.readdir(dirPath)
         });
     })
     .catch((err) => console.error(err));
+}
+joinCss();
+module.exports = joinCss;
