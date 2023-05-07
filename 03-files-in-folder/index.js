@@ -13,7 +13,7 @@ fs.readdir(dirPath)
             if (stat.isFile()) {
                 const ext = path.extname(file);
                 const size = stat.size;
-                console.log(`${result} - ${ext.slice(1)} - ${size / 1024}kb`);
+                console.log(`${result} - ${ext.slice(1)} - ${size / 1000}kb`);
             }
         });
     })
