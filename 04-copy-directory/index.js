@@ -18,22 +18,21 @@ async function copyRecursive(source, destination) {
 }
 
 
-function copyFile (sourceDir = 'files', destDir = 'files-copy', folderName = 'files-copy' ){
+function copyFile (sourceDir = 'files', folderName = 'files-copy' ){
 
 
   const dirPath = path.join(__dirname, sourceDir); // source folder
-  const copyPath = path.join(__dirname, destDir); // dest folder
   const dirName = path.join(__dirname, folderName);
 
 
 
-    fs.mkdir(dirName, { recursive: true })
-      .then(() => {
-        console.log(`${dirName} directory created successfully!`);
-      })
-      .catch((err) => {
-        console.error(`Error creating ${dirName} directory:`, err);
-      });
+  fs.mkdir(dirName, { recursive: true })
+    .then(() => {
+      console.log(`${dirName} directory created successfully!`);
+    })
+    .catch((err) => {
+      console.error(`Error creating ${dirName} directory:`, err);
+    });
 
   
   fs.readdir(dirPath)
