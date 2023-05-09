@@ -2,15 +2,18 @@ const fs = require('fs/promises');
 const fsp = require('fs');
 const path = require('path');
 
-
-function joinCss (initialDir ='styles', destDir='project-dist', fileName = 'bundle.css') {
+function joinCss(initialDir = 'styles', destDir = 'project-dist', fileName = 'bundle.css') {
 
   const dirPath = path.join(__dirname, initialDir); // initial dir
   const targetPath = path.join(__dirname, destDir); //dest dir
   const tPath = path.join(targetPath, fileName); // file name in dest dir
   let data = [];
 
-  fs.readdir(dirPath)
+  // Clear the content of bundle.css before copying new content
+  fs.writeFile(tPath, '')
+    .then(() => {
+      return fs.readdir(dirPath);
+    })
     .then(async (files) => {
       for (const file of files) {
         const filePath = path.join(dirPath, file);
