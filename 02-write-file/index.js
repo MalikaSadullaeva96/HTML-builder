@@ -4,6 +4,9 @@ const { stdin, stdout } = process;
 
 const filePath = path.join(__dirname, 'text.txt');
 
+// Clear the text.txt file before each run
+fs.writeFileSync(filePath, '');
+
 stdout.write('Hi! Please enter text\n');
 
 const writeStream = fs.createWriteStream(filePath, { flags: 'a' });
