@@ -52,7 +52,7 @@ async function copyFile(sourceDir = 'files', folderName = 'files-copy') {
     if (err.code === 'EEXIST') {
       console.error(`Error creating ${dirName} directory: Directory already exists.`);
     } else {
-      console.error(`Error:`, err);
+      console.error('Error:', err);
     }
   }
 }
